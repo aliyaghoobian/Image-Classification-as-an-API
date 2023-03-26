@@ -1,2 +1,5 @@
 tensorflow
 scikit-learn
+uvicorn
+fastapi
+uvicorn

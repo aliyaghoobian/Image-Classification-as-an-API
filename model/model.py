@@ -8,6 +8,7 @@ from tensorflow.keras.models import load_model
 
 class AIModel:
     model_path: Path
+    
     model = None
 
     def __post_init__(self):
