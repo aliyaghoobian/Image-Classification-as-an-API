@@ -1,11 +1,13 @@
 import json
 import numpy as np
 from pathlib import Path
+from dataclasses import dataclass
+
 from tensorflow.image import resize
 from tensorflow.keras.models import load_model
 
 
-
+@dataclass
 class AIModel:
     model_path: Path
     
@@ -21,7 +23,7 @@ class AIModel:
         return self.model
     def preprocessing(self, image_query):
         # Resize to 32*32
-        x_pred = resize(image_query,[32,32]).astype('float32')
+        x_pred = np.array([resize(image_query,[32,32])]).astype('float32')
         # Scale data
         x_input = x_pred / 255
         return x_input
@@ -31,6 +33,6 @@ class AIModel:
         x_input = self.preprocessing(image_query)
         preds = model.predict(x_input)[0]
         # Convert One-hot vector to index
-        idx = np.argmax(preds,axis=1)
+        idx = np.argmax(preds)
         labels= ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-        return labels[idx]
+        return labels[idx], max(preds)

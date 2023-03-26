@@ -3,3 +3,7 @@ scikit-learn
 uvicorn
 fastapi
 uvicorn
+python-multipart
+dataclasses
+Pillow
+numpy
