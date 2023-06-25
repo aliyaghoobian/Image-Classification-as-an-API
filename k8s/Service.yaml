@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+ # Service name
+ name: image-classification-sercice
+spec:
+ selector:
+   # Selector for Pods
+    app: image-classification-app
+ ports:
+   # Port Map
+ - port: 8000
+   targetPort: 8000
+   protocol: TCP
+ type: LoadBalancer

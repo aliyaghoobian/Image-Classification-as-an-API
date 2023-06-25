@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-classification-deployment
+  labels:
+    app: image-classification-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: image-classification-app
+  template:
+    metadata:
+      labels:
+        app: image-classification-app
+    spec:
+      containers:
+      - name: image-classification
+        image: ali19y19/imageclassification:0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+      nodeSelector:
+        node-role.kubernetes.io/worker: worker
