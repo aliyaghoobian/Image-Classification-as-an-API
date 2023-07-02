@@ -16,9 +16,14 @@ spec:
     spec:
       containers:
       - name: image-classification
-        image: ali19y19/imageclassification:0.1
+        image: ali19y19/imageclassification:0.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
+      - name: exporter
+        image: ali19y19/exporter:0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9877
       nodeSelector:
         node-role.kubernetes.io/worker: worker

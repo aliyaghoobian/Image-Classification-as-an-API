@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: image-classification-servicemonitor
+  name: image-classification-exporter-monitor
+spec:
+  endpoints:
+    - port: 9877
+      interval: 5s
+      scrapeTimeout: 4s
+  selector:
+    matchLabels:
+      app: image-classification-app
