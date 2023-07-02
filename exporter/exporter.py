@@ -1,6 +1,6 @@
 import os
 import time
-from prometheus_client import start_http_server, Gauge, Enum, Counter
+from prometheus_client import start_http_server, Gauge, Histogram, Counter
 import requests
 import logging
 
@@ -16,28 +16,7 @@ class AppMetrics:
         self.total_requests = Counter("total_request","Total request")
         self.total_succ_requests = Counter("total_succ_request", "Total successful request")
         self.total_fail_requests = Counter("app_total_fail_request","Total failed request")
-
-        self.current_requests = Gauge("current_requests", "Current requests")
-        self.current_succ_requests = Gauge("current_succ_requests", "Current successful requests")
-        self.current_fail_requests = Gauge("current_fail_requests", "Current failed requests")
-        
-
-        self.current_acc = Gauge("current_acc", "Current accuracy")
-        self.total_acc = Gauge("total_acc", "Total accuracy")
-
-        self.current_number_per_label = {
-            'airplane': Gauge("current_airplane_requests", "current airplane requests"),
-            'automobile': Gauge("current_automobile_request", "current automobile requests"),
-            'bird': Gauge("current_bird_requests", "current bird requests"),
-            'cat':Gauge("current_cat_requests", "current cat requests"),
-            'deer':Gauge("current_deer_requests", "current deer requests"),
-            'dog':Gauge("current_dog_requests", "current dog requests"),
-            'frog':Gauge("current_frog_requests", "current frog requests"),
-            'horse':Gauge("current_horse_requests", "current horse requests"),
-            'ship':Gauge("current_ship_requests", "current ship requests"),
-            'truck':Gauge("current_truck_requests", "current truck requests")
-            }
-
+        self.time_dur = Histogram('python_request_duration_seconds', 'Histogram for the duration in seconds.', buckets=(1, 2, 5, 6, 10, _INF))
 
         self.total_number_per_label =  {
             'airplane': Counter("total_airplane_requests", "Total airplane requests"),
@@ -52,19 +31,6 @@ class AppMetrics:
             'truck':Counter("total_truck_requests", "Total truck requests")
             }
 
-
-        self.current_acc_per_label =  {
-            'airplane': Gauge("current_airplane_acc", "Current airplane accuracy"),
-            'automobile': Gauge("current_automobile_acc", "Current automobile accuracy"),
-            'bird': Gauge("current_bird_acc", "Current bird accuracy"),
-            'cat':Gauge("current_cat_acc", "Current cat accuracy"),
-            'deer':Gauge("current_deer_acc", "Current deer accuracy"),
-            'dog':Gauge("current_dog_acc", "Current dog accuracy"),
-            'frog':Gauge("current_frog_acc", "Current frog accuracy"),
-            'horse':Gauge("current_horse_acc", "Current horse accuracy"),
-            'ship':Gauge("current_ship_acc", "Current ship accuracy"),
-            'truck':Gauge("current_truck_acc", "Current truck accuracy")
-            }
 
         self.total_acc_per_label =  {
             'airplane': Gauge("total_airplane_acc", "total airplane accuracy"),
@@ -88,33 +54,28 @@ class AppMetrics:
 
     def fetch(self):
         # Fetch raw status data from the application
-        headers = {'Accept': 'application/json'}
-        resp = requests.get(url=f"http://localhost:{self.app_port}/metric", headers=headers)
-        status_data = resp.json()
+        try:
+            headers = {'Accept': 'application/json'}
+            resp = requests.get(url=f"http://localhost:{self.app_port}/metric", headers=headers)
+            status_data = resp.json()
+        except Exception as e:
+            print(e)
 
         # Update Prometheus metrics with application metrics
-        self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'])
-        self.current_requests.set(status_data['suc_requests'] + status_data['failed_requests'])
-        self.total_succ_requests.inc(status_data['suc_requests'])
-        self.total_fail_requests.inc(status_data['failed_requests'])
-        self.current_succ_requests.set(status_data['suc_requests'])
-        self.current_fail_requests.set(status_data['failed_requests'])
-
-
+        self.total_requests.set(status_data['suc_requests'] + status_data['failed_requests'])
+        self.total_succ_requests.set(status_data['suc_requests'])
+        self.total_fail_requests.set(status_data['failed_requests'])
 
         for item, accuracy in status_data['acc_per_label'].items():
-            sum_avg = self.total_acc_per_label[item]._value.get() *  self.total_number_per_label[item]._value.get() + sum(accuracy)
-            self.current_acc_per_label[item].set(sum(accuracy))
-            if self.total_number_per_label[item]._value.get() != 0:
-                self.total_acc_per_label[item].set(sum_avg/self.total_number_per_label[item]._value.get())
+            self.total_acc_per_label[item].set(accuracy)
 
         for item, num in status_data['num_labels'].items():
-            self.current_number_per_label[item].set(num)
-            self.total_number_per_label[item].inc(num)
-
+            self.total_number_per_label[item].set(num)
+        
+        for dur in status_data['time_dur']:
+            self.time_dur.observe(dur)
 
 def main():
-    """Main entry point"""
 
     polling_interval_seconds = int(os.getenv("POLLING_INTERVAL_SECONDS", "5"))
     app_port = int(os.getenv("APP_PORT", "8000"))

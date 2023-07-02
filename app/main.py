@@ -9,6 +9,8 @@ from PIL import Image
 from io import BytesIO
 from fastapi.exceptions import HTTPException
 import monitoring
+import time
+
 app = FastAPI()
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
@@ -44,12 +46,14 @@ async def predict(file: UploadFile):
         MONITORING.add_number_of_fail_req_inference()
         raise HTTPException(status_code=400, detail="Invalid file type")
 
+    start = time.time()
     im = Image.open(file.file)
     if im.mode in ("RGBA", "P"): 
         im = im.convert("RGB")
     input_pred = np.array(im)
     pred, acc = AI_MODEL.predict(input_pred)
-    MONITORING.add_number_of_suc_req_inference(acc=acc,label=pred)
+    end = time.time()
+    MONITORING.add_number_of_suc_req_inference(acc=acc,label=pred,duration=end-start)
     return {"class": pred, "accuracy": str(acc)}
 
 
