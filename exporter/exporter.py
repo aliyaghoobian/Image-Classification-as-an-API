@@ -56,27 +56,28 @@ class AppMetrics:
 
     def fetch(self):
         # Fetch raw status data from the application
+        status_data = None
         try:
             headers = {'Accept': 'application/json'}
             resp = requests.get(url=f"http://localhost:{self.app_port}/metric", headers=headers)
             status_data = resp.json()
         except Exception as e:
             print(e)
+        if status_data is not None:
+            # Update Prometheus metrics with application metrics
+            self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'])
+            self.total_succ_requests.inc(status_data['suc_requests'])
+            self.total_fail_requests.inc(status_data['failed_requests'])
 
-        # Update Prometheus metrics with application metrics
-        self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'] - self.total_requests._value.get())
-        self.total_requests.inc(status_data['suc_requests'] - self.total_requests._value.get())
-        self.total_fail_requests.inc(status_data['failed_requests'] - self.total_fail_requests._value.get())
+            for item, accuracy in status_data['acc_per_label'].items():
+                for acc in accuracy:
+                    self.total_acc_per_label[item].set(accuracy)
 
-        for item, accuracy in status_data['acc_per_label'].items():
-            for acc in accuracy:
-                self.total_acc_per_label[item].set(accuracy)
-
-        for item, num in status_data['num_labels'].items():
-            self.total_number_per_label[item].inc(num - self.total_number_per_label[item]._value.get())
-        
-        for dur in status_data['time_dur']:
-            self.time_dur.observe(dur)
+            for item, num in status_data['num_labels'].items():
+                self.total_number_per_label[item].inc(num)
+            
+            for dur in status_data['time_dur']:
+                self.time_dur.observe(dur)
 
 def main():
 

@@ -15,7 +15,9 @@ class monitoring():
         self.number_per_label[label] = self.number_per_label[label] +1 
 
     def get_number_label(self):
-        return self.number_per_label
+        temp = self.number_per_label
+        self.number_per_label =  {'airplane': 0, 'automobile': 0, 'bird': 0, 'cat':0 ,'deer':0, 'dog':0, 'frog':0, 'horse':0, 'ship':0, 'truck':0 }
+        return temp
     
     def add_acc_per_label(self, acc, label):
         self.acc_per_label[label].append(acc)
@@ -43,10 +45,14 @@ class monitoring():
         self.number_of_fail_req_inference = self.number_of_fail_req_inference + 1
     
     def get_number_of_suc_req_inference(self):
-        return self.number_of_sec_req_inference
+        temp_suc_req = self.number_of_sec_req_inference
+        self.number_of_sec_req_inference = 0 
+        return temp_suc_req
 
     def get_number_of_fail_req_inference(self):
-        return self.number_of_fail_req_inference
+        temp_fail_req = self.number_of_fail_req_inference
+        self.number_of_fail_req_inference = 0 
+        return temp_fail_req
     
     def status_inference(self):
         stat ={

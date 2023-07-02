@@ -30,7 +30,6 @@ def on_startup():
 
 @app.get("/metric")
 async def chech_status(request: Request):
-    print(request.client.host)
     if str(request.client.host) == "127.0.0.1" or str(request.client.host) == "185.173.104.89" or str(request.client.host) == "185.208.79.8":
         return MONITORING.status_inference()
 
