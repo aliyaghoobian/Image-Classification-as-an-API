@@ -11,4 +11,4 @@ spec:
       scrapeTimeout: 4s
   selector:
     matchLabels:
-      app: image-classification-app
+      app: image-classification-monitoring
