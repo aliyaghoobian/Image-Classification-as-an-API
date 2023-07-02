@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: image-classification-monitoring-service
   labels:
-    - app: image-classification-monitoring
+    app: image-classification-monitoring
 spec:
   selector:
     app: image-classification-app

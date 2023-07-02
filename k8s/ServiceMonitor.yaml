@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app: image-classification-servicemonitor
+    prometheus: main
   name: image-classification-exporter-monitor
 spec:
   endpoints:
