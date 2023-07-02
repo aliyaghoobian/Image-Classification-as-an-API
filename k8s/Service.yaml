@@ -12,3 +12,17 @@ spec:
     targetPort: 8000
     nodePort: 30036
     protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-classification-monitoring-service
+spec:
+  selector:
+    app: image-classification-app
+  type: ClusterIP
+  ports:
+    - name: http-metric
+      port: 9877
+      targetPort: http-metric
