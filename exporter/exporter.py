@@ -6,6 +6,8 @@ import logging
 
 logger=logging.getLogger() 
 
+_INF = float("inf")
+
 
 class AppMetrics:
     def __init__(self, app_port=8000, polling_interval_seconds=5):
@@ -62,15 +64,16 @@ class AppMetrics:
             print(e)
 
         # Update Prometheus metrics with application metrics
-        self.total_requests.set(status_data['suc_requests'] + status_data['failed_requests'])
-        self.total_succ_requests.set(status_data['suc_requests'])
-        self.total_fail_requests.set(status_data['failed_requests'])
+        self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'] - self.total_requests._value.get())
+        self.total_requests.inc(status_data['suc_requests'] - self.total_requests._value.get())
+        self.total_fail_requests.inc(status_data['failed_requests'] - self.total_fail_requests._value.get())
 
         for item, accuracy in status_data['acc_per_label'].items():
-            self.total_acc_per_label[item].set(accuracy)
+            for acc in accuracy:
+                self.total_acc_per_label[item].set(accuracy)
 
         for item, num in status_data['num_labels'].items():
-            self.total_number_per_label[item].set(num)
+            self.total_number_per_label[item].inc(num - self.total_number_per_label[item]._value.get())
         
         for dur in status_data['time_dur']:
             self.time_dur.observe(dur)
