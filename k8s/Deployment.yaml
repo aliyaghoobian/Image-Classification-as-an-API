@@ -16,13 +16,13 @@ spec:
     spec:
       containers:
       - name: image-classification
-        image: ali19y19/imageclassification:0.3
+        image: ali19y19/imageclassification:0.4
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           containerPort: 8000
       - name: exporter
-        image: ali19y19/exporter:0.1
+        image: ali19y19/exporter:0.2
         imagePullPolicy: IfNotPresent
         ports:
         - name: http-metric

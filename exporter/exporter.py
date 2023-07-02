@@ -5,6 +5,7 @@ import requests
 import logging
 
 logger=logging.getLogger() 
+logging.basicConfig(level=logging.DEBUG)
 
 _INF = float("inf")
 
@@ -64,6 +65,7 @@ class AppMetrics:
         except Exception as e:
             print(e)
         if status_data is not None:
+            logger.info(status_data)
             # Update Prometheus metrics with application metrics
             self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'])
             self.total_succ_requests.inc(status_data['suc_requests'])
@@ -71,7 +73,7 @@ class AppMetrics:
 
             for item, accuracy in status_data['acc_per_label'].items():
                 for acc in accuracy:
-                    self.total_acc_per_label[item].set(accuracy)
+                    self.total_acc_per_label[item].set(acc)
 
             for item, num in status_data['num_labels'].items():
                 self.total_number_per_label[item].inc(num)

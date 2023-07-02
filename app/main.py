@@ -31,7 +31,10 @@ def on_startup():
 @app.get("/metric")
 async def chech_status(request: Request):
     if str(request.client.host) == "127.0.0.1" or str(request.client.host) == "185.173.104.89" or str(request.client.host) == "185.208.79.8":
-        return MONITORING.status_inference()
+        try:
+            return MONITORING.status_inference()
+        except Exception as e:
+            print(e)
 
     raise HTTPException(status_code=403, detail="Not accessible")
 
