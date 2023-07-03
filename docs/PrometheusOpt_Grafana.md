@@ -1,5 +1,5 @@
 # Prometheus and Grafana
-In this guide you can install Prometheus operator and Grafana.
+In this guide, you can install Prometheus operator and Grafana.
 
 + Install Helm
 ```bash
@@ -18,6 +18,17 @@ $ helm repo update
 + Install Prometheus Kubernetes
 ```bash
 $ helm install prometheus prometheus-community/kube-prometheus-stack
+```
++ Validation
+```bash
+$ kubectl get pods
+default       prometheus-grafana-5b55f9d866-mh7wb                      3/3     Running       0        33h
+default       prometheus-kube-prometheus-operator-59454c549d-w4czz     1/1     Running       0        33h
+default       prometheus-kube-state-metrics-5db49ccbb8-z4p6h           1/1     Running       0        33h
+default       prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running       0        33h
+default       prometheus-prometheus-node-exporter-g9hjm                1/1     Running       0        33h
+default       prometheus-prometheus-node-exporter-gcsj9                1/1     Running       0        33h
+default       prometheus-prometheus-node-exporter-vb6xq                1/1     Running       0        33h
 ```
 
 + Change the type of Grafana service to external accessibility 
