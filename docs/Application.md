@@ -49,4 +49,4 @@ URL: http://$IP_Address:30036/docs
 
 + Test:
 
-![alt text](./docs/img/Predicr_dog.png)
+![alt text](./img/Predicr_dog.png)

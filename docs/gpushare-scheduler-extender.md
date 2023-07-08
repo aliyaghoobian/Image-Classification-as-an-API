@@ -13,14 +13,14 @@ Note: If you want to use MiB instead of Gib, you should change the memory-unit i
 
 Before Test1 and Test2:
 
-![alt text](./docs/img/gpu_start.png)
+![alt text](./img/gpu_start.png)
 
 Test1 is running:
 
-![alt text](./docs/img/gpu-test1.png)
-![alt text](./docs/img/gpu-test1-details.png)
+![alt text](./img/gpu-test1.png)
+![alt text](./img/gpu-test1-details.png)
 
 Test1 and Test2 are running:
 
-![alt text](./docs/img/gpu-test2.png)
-![alt text](./docs/img/gpu-test2-details.png)
+![alt text](./img/gpu-test2.png)
+![alt text](./img/gpu-test2-details.png)

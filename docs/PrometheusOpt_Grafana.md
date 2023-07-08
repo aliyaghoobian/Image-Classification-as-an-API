@@ -53,6 +53,6 @@ You can create your own custom dashboard in Grafana and you can also use many pr
 
 + Test:
 
-![alt text](./docs/img/NodeExporter.png)
-![alt text](./docs/img/Prometheus.jpg)
-![alt text](./docs/img/aiDashbord.png)
+![alt text](./img/NodeExporter.png)
+![alt text](./img/Prometheus.jpg)
+![alt text](./img/aiDashbord.png)
