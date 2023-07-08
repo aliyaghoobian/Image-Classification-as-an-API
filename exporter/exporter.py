@@ -65,7 +65,7 @@ class AppMetrics:
         except Exception as e:
             print(e)
         if status_data is not None:
-            logger.info(status_data)
+            # logger.info(status_data)
             # Update Prometheus metrics with application metrics
             self.total_requests.inc(status_data['suc_requests'] + status_data['failed_requests'])
             self.total_succ_requests.inc(status_data['suc_requests'])
