@@ -46,3 +46,7 @@ aiservice     image-classification-deployment-b6d5f6c4d-gx74n          2/2     R
 + Open FastAPI documentation page
 
 URL: http://$IP_Address:30036/docs
+
++ Test:
+
+![alt text](./docs/img/Predicr_dog.png)

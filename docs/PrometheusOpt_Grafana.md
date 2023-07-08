@@ -50,3 +50,9 @@ Note: A Grafana data source is any place from which Grafana can pull data.
 
 + Add Dashboard to Grafana
 You can create your own custom dashboard in Grafana and you can also use many pre-built templates like node-exporter-full or kube-state-metrics.
+
++ Test:
+
+![alt text](./docs/img/NodeExporter.png)
+![alt text](./docs/img/Prometheus.jpg)
+![alt text](./docs/img/aiDashbord.png)
