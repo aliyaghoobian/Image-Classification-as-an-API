@@ -4,18 +4,14 @@ Distributed system course project
 Lecturer: Dr. Hamid Reza Faragardi
 
 Project developer: Ali Yaghounbian - Muhammad Valinezhad
------
+
 ## Kubernetes cluster pods
 
 ![alt text](./docs/img/cluster.png)
 
-+ Image-classification-deployment: CNN-based image classifier is implemented in Python library sk-learn and Keras with the backend of Tensorflow. Layer-wise architectural details of this model are shown in the following table.
++ Image-classification-deployment: CNN-based image classifier is implemented in Python library sk-learn and Keras with the backend of Tensorflow. Layer-wise architectural details of this model are shown in the following table. RESTful API for this application is implemented by FastAPI and uvicorn. This application contains Exporter to retrive metrics data and transfer captured data into a Prometheus ingestible format.
+
 ![alt text](./docs/img/cnn.JPG)
-
-RESTful API for this application is implemented by FastAPI and uvicorn.
-
-This application contains Exporter to retrive metrics data and transfer captured data into a Prometheus ingestible format.
-
 
 + Binpack: Simple test app to show GPU sharing and GPU scheduling.
 
